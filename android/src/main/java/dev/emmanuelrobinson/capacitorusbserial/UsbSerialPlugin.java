@@ -1,5 +1,7 @@
 package dev.emmanuelrobinson.capacitorusbserial;
 
+import android.util.Log;
+import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
@@ -8,12 +10,26 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 @CapacitorPlugin(name = "UsbSerial")
 public class UsbSerialPlugin extends Plugin {
     
+    private static final String TAG = "UsbSerialPlugin";
     private UsbSerial implementation;
+    
+    public UsbSerialPlugin() {
+        super();
+        Log.d(TAG, "UsbSerialPlugin constructor called");
+    }
     
     @Override
     public void load() {
-        implementation = new UsbSerial(getContext(), this);
-        implementation.initialize();
+        try {
+            Log.d(TAG, "UsbSerialPlugin load() called");
+            implementation = new UsbSerial(getContext(), this);
+            Log.d(TAG, "UsbSerial implementation created successfully");
+            implementation.initialize();
+            Log.d(TAG, "UsbSerial implementation initialized successfully");
+        } catch (Exception e) {
+            Log.e(TAG, "Error in UsbSerialPlugin load()", e);
+            throw new RuntimeException("Failed to load USB Serial plugin", e);
+        }
     }
     
     @Override
@@ -57,5 +73,10 @@ public class UsbSerialPlugin extends Plugin {
     @PluginMethod
     public void stopListening(PluginCall call) {
         implementation.stopListening(call);
+    }
+    
+    // Public method to expose notifyListeners functionality to UsbSerial
+    public void notifyListenersFromImplementation(String eventName, JSObject data) {
+        this.notifyListeners(eventName, data);
     }
 }

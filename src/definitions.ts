@@ -23,6 +23,23 @@ export interface DataReceivedEvent {
   deviceId: number;
 }
 
+export interface DeviceAttachedEvent {
+  deviceId: number;
+  vendorId: number;
+  productId: number;
+  deviceName: string;
+  manufacturerName?: string;
+  serialNumber?: string;
+}
+
+export interface DeviceDetachedEvent {
+  deviceId: number;
+}
+
+export interface ErrorEvent {
+  message: string;
+}
+
 export interface UsbSerialPlugin {
   /**
    * Request permission to access USB devices
@@ -81,5 +98,29 @@ export interface UsbSerialPlugin {
   addListener(
     eventName: 'connectionStateChanged',
     listenerFunc: (event: { connected: boolean; deviceId?: number }) => void
+  ): Promise<{ remove: () => void }>;
+
+  /**
+   * Add listener for device attached events
+   */
+  addListener(
+    eventName: 'deviceAttached',
+    listenerFunc: (event: DeviceAttachedEvent) => void
+  ): Promise<{ remove: () => void }>;
+
+  /**
+   * Add listener for device detached events
+   */
+  addListener(
+    eventName: 'deviceDetached',
+    listenerFunc: (event: DeviceDetachedEvent) => void
+  ): Promise<{ remove: () => void }>;
+
+  /**
+   * Add listener for error events
+   */
+  addListener(
+    eventName: 'error',
+    listenerFunc: (event: ErrorEvent) => void
   ): Promise<{ remove: () => void }>;
 }

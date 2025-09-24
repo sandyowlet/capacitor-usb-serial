@@ -170,6 +170,10 @@ public class UsbSerial: NSObject {
             case .failed(let error):
                 call.reject("Network connection failed: \(error.localizedDescription)")
                 
+                plugin?.notifyListeners("error", data: [
+                    "message": "Network connection failed: \(error.localizedDescription)"
+                ])
+                
             case .cancelled:
                 self?.plugin?.notifyListeners("connectionStateChanged", data: [
                     "connected": false
@@ -230,6 +234,9 @@ public class UsbSerial: NSObject {
         else if let connection = connection {
             connection.send(content: Data(bytes), completion: .contentProcessed { error in
                 if let error = error {
+                    self?.plugin?.notifyListeners("error", data: [
+                        "message": "Write failed: \(error.localizedDescription)"
+                    ])
                     call.reject("Write failed: \(error.localizedDescription)")
                 } else {
                     call.resolve(["bytesWritten": bytes.count])
@@ -324,14 +331,21 @@ public class UsbSerial: NSObject {
         if let accessory = notification.userInfo?[EAAccessoryKey] as? EAAccessory {
             plugin?.notifyListeners("deviceAttached", data: [
                 "deviceId": accessory.connectionID,
+                "vendorId": 0, // EAAccessory doesn't expose vendor ID
+                "productId": 0, // EAAccessory doesn't expose product ID
                 "deviceName": accessory.name,
-                "manufacturer": accessory.manufacturer
+                "manufacturerName": accessory.manufacturer,
+                "serialNumber": accessory.serialNumber
             ])
         }
     }
     
     @objc private func accessoryDidDisconnect(_ notification: Notification) {
         if let accessory = notification.userInfo?[EAAccessoryKey] as? EAAccessory {
+            plugin?.notifyListeners("deviceDetached", data: [
+                "deviceId": accessory.connectionID
+            ])
+            
             if self.accessory?.connectionID == accessory.connectionID {
                 disconnect()
                 plugin?.notifyListeners("connectionStateChanged", data: [
@@ -339,10 +353,6 @@ public class UsbSerial: NSObject {
                     "deviceId": accessory.connectionID
                 ])
             }
-            
-            plugin?.notifyListeners("deviceDetached", data: [
-                "deviceId": accessory.connectionID
-            ])
         }
     }
 }

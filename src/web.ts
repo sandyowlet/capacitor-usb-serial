@@ -1,11 +1,16 @@
 import { WebPlugin } from '@capacitor/core';
-import type { UsbSerialPlugin, UsbDevice, DataReceivedEvent } from './definitions';
+import type { UsbSerialPlugin, UsbDevice, DataReceivedEvent, DeviceAttachedEvent, DeviceDetachedEvent, ErrorEvent } from './definitions';
 
 export class UsbSerialWeb extends WebPlugin implements UsbSerialPlugin {
   private port: any = null;
   private reader: any = null;
   private writer: any = null;
   private listening = false;
+
+  constructor() {
+    super();
+    this.setupSerialPortListeners();
+  }
 
   async requestPermission(): Promise<{ granted: boolean }> {
     if (!('serial' in navigator)) {
@@ -16,6 +21,7 @@ export class UsbSerialWeb extends WebPlugin implements UsbSerialPlugin {
       this.port = await (navigator as any).serial.requestPort();
       return { granted: true };
     } catch (e) {
+      this.notifyError('Permission denied: ' + (e as Error).message);
       return { granted: false };
     }
   }
@@ -26,7 +32,7 @@ export class UsbSerialWeb extends WebPlugin implements UsbSerialPlugin {
     }
     
     const ports = await (navigator as any).serial.getPorts();
-    const devices: UsbDevice[] = ports.map((port: any, index: number) => ({
+    const devices: UsbDevice[] = ports.map((_port: any, index: number) => ({
       deviceId: index,
       vendorId: 0,
       productId: 0,
@@ -46,6 +52,7 @@ export class UsbSerialWeb extends WebPlugin implements UsbSerialPlugin {
     }
     
     if (!this.port) {
+      this.notifyError('No port available for connection');
       throw new Error('No port available');
     }
     
@@ -54,11 +61,11 @@ export class UsbSerialWeb extends WebPlugin implements UsbSerialPlugin {
     await this.port.open({ baudRate });
     
     const textDecoder = new TextDecoderStream();
-    const readableStreamClosed = this.port.readable.pipeTo(textDecoder.writable);
+    this.port.readable.pipeTo(textDecoder.writable);
     this.reader = textDecoder.readable.getReader();
     
     const textEncoder = new TextEncoderStream();
-    const writableStreamClosed = textEncoder.readable.pipeTo(this.port.writable);
+    textEncoder.readable.pipeTo(this.port.writable);
     this.writer = textEncoder.writable.getWriter();
     
     this.notifyListeners('connectionStateChanged', { 
@@ -94,6 +101,7 @@ export class UsbSerialWeb extends WebPlugin implements UsbSerialPlugin {
 
   async write(options: { data: string }): Promise<{ bytesWritten: number }> {
     if (!this.writer) {
+      this.notifyError('Cannot write: Not connected to any device');
       throw new Error('Not connected');
     }
     
@@ -103,6 +111,7 @@ export class UsbSerialWeb extends WebPlugin implements UsbSerialPlugin {
 
   async read(): Promise<{ data: string }> {
     if (!this.reader) {
+      this.notifyError('Cannot read: Not connected to any device');
       throw new Error('Not connected');
     }
     
@@ -131,7 +140,7 @@ export class UsbSerialWeb extends WebPlugin implements UsbSerialPlugin {
           break;
         }
         
-        const hexData = Array.from(value)
+        const hexData = Array.from(value as string)
           .map((c: string) => c.charCodeAt(0).toString(16).padStart(2, '0'))
           .join('');
         
@@ -144,9 +153,39 @@ export class UsbSerialWeb extends WebPlugin implements UsbSerialPlugin {
         
         this.notifyListeners('dataReceived', event);
       } catch (error) {
-        console.error('Read error:', error);
+        this.notifyError('Read error: ' + (error as Error).message);
         break;
       }
     }
+  }
+
+  private setupSerialPortListeners(): void {
+    if ('serial' in navigator) {
+      (navigator as any).serial.addEventListener('connect', () => {
+        const attachedEvent: DeviceAttachedEvent = {
+          deviceId: 0, // Web Serial doesn't provide device ID
+          vendorId: 0,
+          productId: 0,
+          deviceName: 'Web Serial Port',
+        };
+        this.notifyListeners('deviceAttached', attachedEvent);
+      });
+
+      (navigator as any).serial.addEventListener('disconnect', (event: any) => {
+        const detachedEvent: DeviceDetachedEvent = {
+          deviceId: 0,
+        };
+        this.notifyListeners('deviceDetached', detachedEvent);
+        
+        if (this.port === event.target) {
+          this.disconnect();
+        }
+      });
+    }
+  }
+
+  private notifyError(message: string): void {
+    const errorEvent: ErrorEvent = { message };
+    this.notifyListeners('error', errorEvent);
   }
 }

@@ -23,6 +23,9 @@ npx cap sync
 * [`stopListening()`](#stoplistening)
 * [`addListener('dataReceived', ...)`](#addlistenerdatareceived-)
 * [`addListener('connectionStateChanged', ...)`](#addlistenerconnectionstatechanged-)
+* [`addListener('deviceAttached', ...)`](#addlistenerdeviceattached-)
+* [`addListener('deviceDetached', ...)`](#addlistenerdevicedetached-)
+* [`addListener('error', ...)`](#addlistenererror-)
 * [Interfaces](#interfaces)
 
 </docgen-index>
@@ -178,6 +181,60 @@ Add listener for connection state changes
 --------------------
 
 
+### addListener('deviceAttached', ...)
+
+```typescript
+addListener(eventName: 'deviceAttached', listenerFunc: (event: DeviceAttachedEvent) => void) => Promise<{ remove: () => void; }>
+```
+
+Add listener for device attached events
+
+| Param              | Type                                                                                    |
+| ------------------ | --------------------------------------------------------------------------------------- |
+| **`eventName`**    | <code>'deviceAttached'</code>                                                           |
+| **`listenerFunc`** | <code>(event: <a href="#deviceattachedevent">DeviceAttachedEvent</a>) =&gt; void</code> |
+
+**Returns:** <code>Promise&lt;{ remove: () =&gt; void; }&gt;</code>
+
+--------------------
+
+
+### addListener('deviceDetached', ...)
+
+```typescript
+addListener(eventName: 'deviceDetached', listenerFunc: (event: DeviceDetachedEvent) => void) => Promise<{ remove: () => void; }>
+```
+
+Add listener for device detached events
+
+| Param              | Type                                                                                    |
+| ------------------ | --------------------------------------------------------------------------------------- |
+| **`eventName`**    | <code>'deviceDetached'</code>                                                           |
+| **`listenerFunc`** | <code>(event: <a href="#devicedetachedevent">DeviceDetachedEvent</a>) =&gt; void</code> |
+
+**Returns:** <code>Promise&lt;{ remove: () =&gt; void; }&gt;</code>
+
+--------------------
+
+
+### addListener('error', ...)
+
+```typescript
+addListener(eventName: 'error', listenerFunc: (event: ErrorEvent) => void) => Promise<{ remove: () => void; }>
+```
+
+Add listener for error events
+
+| Param              | Type                                                                  |
+| ------------------ | --------------------------------------------------------------------- |
+| **`eventName`**    | <code>'error'</code>                                                  |
+| **`listenerFunc`** | <code>(event: <a href="#errorevent">ErrorEvent</a>) =&gt; void</code> |
+
+**Returns:** <code>Promise&lt;{ remove: () =&gt; void; }&gt;</code>
+
+--------------------
+
+
 ### Interfaces
 
 
@@ -213,5 +270,31 @@ Add listener for connection state changes
 | **`hexData`**   | <code>string</code> |
 | **`timestamp`** | <code>number</code> |
 | **`deviceId`**  | <code>number</code> |
+
+
+#### DeviceAttachedEvent
+
+| Prop                   | Type                |
+| ---------------------- | ------------------- |
+| **`deviceId`**         | <code>number</code> |
+| **`vendorId`**         | <code>number</code> |
+| **`productId`**        | <code>number</code> |
+| **`deviceName`**       | <code>string</code> |
+| **`manufacturerName`** | <code>string</code> |
+| **`serialNumber`**     | <code>string</code> |
+
+
+#### DeviceDetachedEvent
+
+| Prop           | Type                |
+| -------------- | ------------------- |
+| **`deviceId`** | <code>number</code> |
+
+
+#### ErrorEvent
+
+| Prop          | Type                |
+| ------------- | ------------------- |
+| **`message`** | <code>string</code> |
 
 </docgen-api>
