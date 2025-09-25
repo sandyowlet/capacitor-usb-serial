@@ -170,7 +170,7 @@ public class UsbSerial: NSObject {
             case .failed(let error):
                 call.reject("Network connection failed: \(error.localizedDescription)")
                 
-                plugin?.notifyListeners("error", data: [
+                self?.plugin?.notifyListeners("error", data: [
                     "message": "Network connection failed: \(error.localizedDescription)"
                 ])
                 
@@ -234,7 +234,7 @@ public class UsbSerial: NSObject {
         else if let connection = connection {
             connection.send(content: Data(bytes), completion: .contentProcessed { error in
                 if let error = error {
-                    self?.plugin?.notifyListeners("error", data: [
+                    self.plugin?.notifyListeners("error", data: [
                         "message": "Write failed: \(error.localizedDescription)"
                     ])
                     call.reject("Write failed: \(error.localizedDescription)")
