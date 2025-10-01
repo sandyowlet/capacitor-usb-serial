@@ -257,7 +257,7 @@ Add listener for error events
 | **`baudRate`** | <code>number</code>                                         |
 | **`dataBits`** | <code>number</code>                                         |
 | **`stopBits`** | <code>number</code>                                         |
-| **`parity`**   | <code>'none' \| 'odd' \| 'even' \| 'mark' \| 'space'</code> |
+| **`parity`**   | <code>'none' \| 'mark' \| 'odd' \| 'even' \| 'space'</code> |
 | **`dtr`**      | <code>boolean</code>                                        |
 | **`rts`**      | <code>boolean</code>                                        |
 
@@ -293,8 +293,14 @@ Add listener for error events
 
 #### ErrorEvent
 
-| Prop          | Type                |
-| ------------- | ------------------- |
-| **`message`** | <code>string</code> |
+Events providing information related to errors in scripts or in files.
+
+| Prop           | Type                |
+| -------------- | ------------------- |
+| **`colno`**    | <code>number</code> |
+| **`error`**    | <code>any</code>    |
+| **`filename`** | <code>string</code> |
+| **`lineno`**   | <code>number</code> |
+| **`message`**  | <code>string</code> |
 
 </docgen-api>

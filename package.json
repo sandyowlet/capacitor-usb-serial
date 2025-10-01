@@ -19,7 +19,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/emmanuelorobinson/capacitor-usb-serial.git.git"
+    "url": "git+https://github.com/emmanuelorobinson/capacitor-usb-serial.git"
   },
   "bugs": {
     "url": "https://github.com/emmanuelorobinson/capacitor-usb-serial.git/issues"
@@ -59,7 +59,7 @@
     "rimraf": "^6.0.1",
     "rollup": "^4.30.1",
     "swiftlint": "^2.0.0",
-    "typescript": "~4.1.5"
+    "typescript": "~5.3.3"
   },
   "peerDependencies": {
     "@capacitor/core": ">=7.0.0"
