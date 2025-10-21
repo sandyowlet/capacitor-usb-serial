@@ -1,0 +1,453 @@
+{
+  "api": {
+    "name": "UsbSerialPlugin",
+    "slug": "usbserialplugin",
+    "docs": "",
+    "tags": [],
+    "methods": [
+      {
+        "name": "requestPermission",
+        "signature": "(options?: { deviceId?: number | undefined; } | undefined) => any",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "{ deviceId?: number | undefined; } | undefined"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "Request permission to access USB devices",
+        "complexTypes": [],
+        "slug": "requestpermission"
+      },
+      {
+        "name": "listDevices",
+        "signature": "() => any",
+        "parameters": [],
+        "returns": "any",
+        "tags": [],
+        "docs": "List all connected USB devices",
+        "complexTypes": [
+          "UsbDevice"
+        ],
+        "slug": "listdevices"
+      },
+      {
+        "name": "connect",
+        "signature": "(options: { deviceId: number; serialOptions?: UsbSerialOptions; }) => any",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "{ deviceId: number; serialOptions?: UsbSerialOptions | undefined; }"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "Connect to a USB device",
+        "complexTypes": [
+          "UsbSerialOptions"
+        ],
+        "slug": "connect"
+      },
+      {
+        "name": "disconnect",
+        "signature": "() => any",
+        "parameters": [],
+        "returns": "any",
+        "tags": [],
+        "docs": "Disconnect from the current device",
+        "complexTypes": [],
+        "slug": "disconnect"
+      },
+      {
+        "name": "write",
+        "signature": "(options: { data: string; }) => any",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "{ data: string; }"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "Write data to the serial port",
+        "complexTypes": [],
+        "slug": "write"
+      },
+      {
+        "name": "read",
+        "signature": "() => any",
+        "parameters": [],
+        "returns": "any",
+        "tags": [],
+        "docs": "Read data from the serial port",
+        "complexTypes": [],
+        "slug": "read"
+      },
+      {
+        "name": "startListening",
+        "signature": "() => any",
+        "parameters": [],
+        "returns": "any",
+        "tags": [],
+        "docs": "Start listening for data",
+        "complexTypes": [],
+        "slug": "startlistening"
+      },
+      {
+        "name": "stopListening",
+        "signature": "() => any",
+        "parameters": [],
+        "returns": "any",
+        "tags": [],
+        "docs": "Stop listening for data",
+        "complexTypes": [],
+        "slug": "stoplistening"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'dataReceived', listenerFunc: (event: DataReceivedEvent) => void) => any",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "'dataReceived'"
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(event: DataReceivedEvent) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "Add listener for data received events",
+        "complexTypes": [
+          "DataReceivedEvent"
+        ],
+        "slug": "addlistenerdatareceived-"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'connectionStateChanged', listenerFunc: (event: { connected: boolean; deviceId?: number; }) => void) => any",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "'connectionStateChanged'"
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(event: { connected: boolean; deviceId?: number | undefined; }) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "Add listener for connection state changes",
+        "complexTypes": [],
+        "slug": "addlistenerconnectionstatechanged-"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'deviceAttached', listenerFunc: (event: DeviceAttachedEvent) => void) => any",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "'deviceAttached'"
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(event: DeviceAttachedEvent) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "Add listener for device attached events",
+        "complexTypes": [
+          "DeviceAttachedEvent"
+        ],
+        "slug": "addlistenerdeviceattached-"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'deviceDetached', listenerFunc: (event: DeviceDetachedEvent) => void) => any",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "'deviceDetached'"
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(event: DeviceDetachedEvent) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "Add listener for device detached events",
+        "complexTypes": [
+          "DeviceDetachedEvent"
+        ],
+        "slug": "addlistenerdevicedetached-"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'error', listenerFunc: (event: ErrorEvent) => void) => any",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "'error'"
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(event: ErrorEvent) => void"
+          }
+        ],
+        "returns": "any",
+        "tags": [],
+        "docs": "Add listener for error events",
+        "complexTypes": [
+          "ErrorEvent"
+        ],
+        "slug": "addlistenererror-"
+      }
+    ],
+    "properties": []
+  },
+  "interfaces": [
+    {
+      "name": "UsbDevice",
+      "slug": "usbdevice",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "deviceId",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        },
+        {
+          "name": "vendorId",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        },
+        {
+          "name": "productId",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        },
+        {
+          "name": "deviceName",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "manufacturerName",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "serialNumber",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        }
+      ]
+    },
+    {
+      "name": "UsbSerialOptions",
+      "slug": "usbserialoptions",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "baudRate",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number | undefined"
+        },
+        {
+          "name": "dataBits",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number | undefined"
+        },
+        {
+          "name": "stopBits",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number | undefined"
+        },
+        {
+          "name": "parity",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "'none' | 'odd' | 'even' | 'mark' | 'space' | undefined"
+        },
+        {
+          "name": "dtr",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "rts",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "boolean | undefined"
+        }
+      ]
+    },
+    {
+      "name": "DataReceivedEvent",
+      "slug": "datareceivedevent",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "data",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "hexData",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "timestamp",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        },
+        {
+          "name": "deviceId",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        }
+      ]
+    },
+    {
+      "name": "DeviceAttachedEvent",
+      "slug": "deviceattachedevent",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "deviceId",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        },
+        {
+          "name": "vendorId",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        },
+        {
+          "name": "productId",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        },
+        {
+          "name": "deviceName",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "manufacturerName",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        },
+        {
+          "name": "serialNumber",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string | undefined"
+        }
+      ]
+    },
+    {
+      "name": "DeviceDetachedEvent",
+      "slug": "devicedetachedevent",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "deviceId",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        }
+      ]
+    },
+    {
+      "name": "ErrorEvent",
+      "slug": "errorevent",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "message",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "enums": [],
+  "typeAliases": [],
+  "pluginConfigs": []
+}
